@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+    首页
+{% endblock %}
+
+{% block style %}
+    <script src="/static/echarts/jquery-2.1.1.min.js"></script>
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script src="/static/echarts/echarts_gl.js"></script>
+{% endblock %}
+{% block search %}
+    <form action="/search" method="get">
+    <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-search d-none d-lg-block">
+          <div class="input-group">
+            <input type="text" name="keywords" class="form-control" placeholder="请输入经度" aria-label="search" aria-describedby="search">
+
+          </div>
+        </li>
+      </ul>
+       <ul class="navbar-nav navbar-nav-right">
+        <li class="nav-item nav-profile dropdown">
+            <button class="btn btn-primary" type="submit">搜索</button>
+        </li>
+      </ul>
+    </div>
+    </form>
+{% endblock %}
+{% block content %}
+    <div class="content-wrapper">
+           <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                <div style="width: 700px;height: 550px" id="main" ></div>
+                <script>
+                    $.ajax({
+                        url:"/get_all_message",
+                        type:"get",
+                        dataType:"json",
+                        success:function (data) {
+                          f(data.data);
+                        }
+                      });
+                    function f(data) {
+                    var Mychart =  echarts.init(document.getElementById("main"));
+                    var option = {
+                    title: {
+                        text: '地理数据在经纬度的分布图',
+                        left: 'center',
+                        top: 0
+                    },
+                    visualMap: {
+                        show:false,
+                        min: 15202,
+                        max: 159980,
+                        dimension: 1,
+                        orient: 'vertical',
+                        right: 10,
+                        top: 'center',
+                        text: ['HIGH', 'LOW'],
+                        calculable: true,
+                        inRange: {
+                            color: ['#f2c31a', '#24b7f2']
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    xAxis: [{
+                        type: 'value'
+                    }],
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    series: [{
+                        name: '探测深度',
+                        type: 'scatter',
+                        symbolSize: 5,
+                        // itemStyle: {
+                        //     normal: {
+                        //         borderWidth: 0.2,
+                        //         borderColor: '#fff'
+                        //     }
+                        // },
+                        data: data
+                    }]
+                    };
+                    Mychart.setOption(option);
+                    }
+                </script>
+                </div>
+              </div>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                本网站主要展示经纬度的地质信息，目前收录了1800条经纬度信息，提供了对应的地质信息更新功能，在以后可以对地质信息进行更新。
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+    地理数据信息
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+          <div class="row">
+            <div class="col-lg-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">地理数据信息展示</h4>
+                  <p class="card-description">
+                  展示已有的<code>地理数据</code>信息，地理信息主要展示某经纬度的地质组成成分，如，土壤、矿物质等。。。
+                  </p>
+                  <a href="/add_geographic_information" class="btn btn-primary">添加地理信息</a>
+                  <div class="table-responsive pt-3">
+                    <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>经纬度</th>
+                          <th>地质成分</th>
+                          <th>深度</th>
+                          <th>占比</th>
+                          <th>百分比</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for datum in data %}
+                            {% for l in l_list %}
+                                {% if datum.longitudelatitude_id == l.longitudelatitude  %}
+                        <tr>
+                          <td>{{ datum.longitudelatitude.longitude }}/{{ datum.longitudelatitude.latitude }}</td>
+                          <td>{{ datum.geology }}</td>
+                          <td>{{ datum.depth }}（米）</td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar 
+                              {% if datum.geology_id == 1 %}
+                              bg-success
+                              {% elif datum.geology_id == 2 %}
+                              bg-info
+                              {% elif datum.geology_id == 3 %}
+                              bg-warning
+                              {% elif datum.geology_id == 4 %}
+                              bg-danger
+                              {% else %}
+                              bg-primary
+                              {% endif %}"
+                                   role="progressbar" style="width: {% widthratio datum.depth l.depth__sum 100%}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </td>
+                          <td>{{ datum.depth }}/{{ l.depth__sum }}</td>
+                          <td>
+                              <a href="/update_geographic_information/{{ datum.id }}" class="btn-warning btn btn-sm">编辑</a>
+                              <a href="/delete_geographic_information/{{ datum.id }}" class="btn-danger btn btn-sm">删除</a>
+                          </td>
+                        </tr>
+                                {% endif %}
+                             {% endfor %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  </div>
+                </div>
+              <ul class="list">
+           {% if data.has_previous %}
+            <a href="/geographic_information?page={{ data.previous_page_number }}" class="btn-sm btn">&lt;</a>
+            {% endif %}
+            {% for page in page_list %}
+                {% if request.GET.page %}
+                    {% if page == request.GET.page|add:0 %}
+                        <a href="/geographic_information?page={{ page }}" class="btn-sm btn-success btn">{{ page }}</a>
+                    {% elif  request.GET.page|add:0 > data.number and page == 1%}
+                        <a href="/geographic_information?page={{ page }}" class="btn-sm btn-success btn">{{ page }}</a>
+                    {% else %}
+                        <a href="/geographic_information?page={{ page }}" class="btn-sm btn">{{ page }}</a>
+                    {% endif %}
+                {% else %}
+                     {% if page == 1 %}
+                        <a href="/geographic_information?page={{ page }}" class="btn-sm btn-success btn">{{ page }}</a>
+                        {% else %}
+                        <a href="/geographic_information?page={{ page }}" class="btn-sm btn">{{ page }}</a>
+                     {% endif %}
+                {% endif %}
+            {% endfor %}
+             {% if data.has_next %}
+                <a href="/geographic_information?page={{ data.next_page_number }}" class="btn-sm btn">&gt;</a>
+             {% endif %}
+        </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

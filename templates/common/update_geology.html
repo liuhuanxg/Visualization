@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    添加地质信息
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+     <div class="content-wrapper" >
+          <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">编辑地质分类</h4>
+                  <p class="card-description">
+                    地质类别和编号不允许重复
+                  </p>
+                  <form class="forms-sample" method="post" action="" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <input type="hidden" name="id" value="{{ geology.id}}">
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">类型</label>
+                      <input type="text" class="form-control" name="geology_name" placeholder="geology_name" value="{{ geology.geology_name }}" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">编号</label>
+                      <input type="number" class="form-control" name="number" placeholder="number" value="{{ geology.number }}" required>
+                    </div>
+                      <div style="color: red;font-size: 12px">{{ error }}</div>
+                    <button type="submit" class="btn btn-primary btn-sm">提交</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

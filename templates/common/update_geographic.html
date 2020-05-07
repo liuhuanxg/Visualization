@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+    编辑地理数据
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+     <div class="content-wrapper" >
+          <div class="row">
+            <div class="col-md-8 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">编辑地理数据</h4>
+                  <p class="card-description">
+                    编辑地理数据，同一个经纬度中地理数据不允许重复。
+                  </p>
+                  <form class="forms-sample" method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                    <div><input type="hidden" name="id" value="{{ geographic.id }}"></div>
+                    <div class="form-group">
+                    <label for="exampleFormControlSelect3">经纬度</label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect3" name="longitudelatitude" >
+                        {% for foo in l_lst %}
+                        <option value="{{ foo.id }}"
+                                {% if geographic.longitudelatitude_id == foo.id %}
+                        selected
+                        {% endif %}>
+                            {{ foo.longitude }}/{{ foo.latitude }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleFormControlSelect3">地质信息</label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect3" name="geology" >
+                        {% for goo in g_lst %}
+                        <option value="{{ goo.id }}" {% if goo.id == geographic.geology_id %}
+                        selected
+                        {% endif %}>{{ goo.geology_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">深度</label>
+                      <input type="number" class="form-control" name="depth" value="{{ geographic.depth }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">提交</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
