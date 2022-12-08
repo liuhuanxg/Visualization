@@ -1,4 +1,4 @@
-certifi==2019.9.11
+certifi==2022.12.7
 Django==2.0.5
 djangorestframework==3.10.3
 Pillow==7.1.2
